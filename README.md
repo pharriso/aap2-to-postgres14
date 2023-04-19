@@ -178,3 +178,40 @@ postgres=# \c awx
 You are now connected to database "awx" as user "postgres".
 awx=# select * from main_jobevent where job_id = 699;
 ```
+
+Run the AAP installer
+------------
+
+Re-run the AAP setup script to ensure we can still manage the environment with Red Hat provided installer for further day2 operations like upgrades.
+
+Update the installer **inventory** with the new DB connection details:
+
+
+```
+[all:vars]
+admin_password='Redhat123'
+
+pg_host='pg14.pharriso.demolab.local'
+pg_port=5432
+
+pg_database='awx'
+pg_username='awx'
+pg_password='Redhat123'
+pg_sslmode='prefer'  # set to 'verify-full' for client-side enforced SSL
+```
+
+Run the setup script and ensure we get a clean run:
+
+```bash
+./setup.sh
+
+
+PLAY RECAP *********************************************************************
+controller.pharriso.demolab.local : ok=284  changed=49   unreachable=0    failed=0    skipped=196  rescued=0    ignored=0   
+localhost                  : ok=0    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+
+The setup process completed successfully.
+Setup log saved to /var/log/tower/setup-2023-04-19-09:59:59.log.
+```
+
+
